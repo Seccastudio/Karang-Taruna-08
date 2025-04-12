@@ -1,33 +1,54 @@
-# Karang Taruna 08 - Community Management System
+# Karang Taruna Web App
 
-**Karang Taruna 08** is a community-driven platform designed to facilitate collaboration, organization, and development within local community groups. This project aims to modernize the management of activities, members, and events, with a user-friendly interface and intuitive navigation.
+This is a web application for **Karang Taruna** built using **ReactJS** with **Vite** for the frontend and **Firebase** for the backend. The application aims to provide a platform for youth community activities, events, and interaction.
 
-## 🚀 Features
-- **Member Management**: Easily manage member profiles and track their participation in events.
-- **Event Scheduling**: Organize and schedule community events, allowing easy RSVP and notifications.
-- **Community Discussions**: Engage in discussions, share announcements, and stay updated.
-- **Customizable Themes**: Tailor the look and feel of the platform to fit your community’s identity.
+## Table of Contents
+- [About](#about)
+- [Technologies Used](#technologies-used)
+- [Project Setup](#project-setup)
+- [Firebase Setup](#firebase-setup)
+- [Running the Project](#running-the-project)
+- [Contributing](#contributing)
+- [License](#license)
 
-## 🔧 Technologies Used
-- **React**: A JavaScript library for building user interfaces, ensuring fast and responsive UI.
-- **Vite**: A modern build tool that ensures fast development and optimized production builds.
-- **CSS Modules**: Scoped styles for modular and maintainable code.
-- **GitHub Actions**: For CI/CD automation.
+## About
 
-## 📖 Getting Started
+This web application serves as an online hub for the **Karang Taruna** community, allowing users to interact, view upcoming events, and get information about the activities of the organization. 
 
-To get a local copy up and running, follow these simple steps:
+Key features include:
+- Community event management
+- Activity and program updates
+- User login and registration
+- Real-time notifications powered by Firebase
+
+### ContactMe
+- Github @Seccastudio
+
+## Technologies Used
+
+- **Frontend**: 
+  - ReactJS
+  - Vite (for fast bundling and development)
+- **Backend**:
+  - Firebase Authentication (for user login)
+  - Firebase Firestore (for database management)
+  - Firebase Cloud Messaging (for push notifications)
+  - Firebase Hosting (for deployment)
+  
+## Project Setup
+
+Follow these steps to set up the project locally:
 
 ### Prerequisites
+
 Ensure you have the following installed:
-- [Node.js](https://nodejs.org/) (v14 or later)
-- [npm](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/)
+- **Node.js** (v16.x or above) – [Download Node.js](https://nodejs.org)
+- **Git** – [Download Git](https://git-scm.com)
 
-### Setup
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Seccastudio/Karang-Taruna-08.git
+### Step 1: Clone the repository
+Clone the repository to your local machine using Git:
 
+```bash
+git clone https://github.com/your-username/karang-taruna-web.git
+cd karang-taruna-web
 
-### ContactME
-- Github @Seccastudio
