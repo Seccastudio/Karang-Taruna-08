@@ -1,0 +1,172 @@
+/* Font & Body */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #bebebe;
+  margin: 0;
+  padding: 0;
+  color: #000000;
+  line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+  background: #212529;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-brand, .nav-link {
+  color: #ffffff !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.nav-link:hover {
+  color: #ffc107 !important;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+/* Titles */
+h1, h2, h3, h4 {
+  font-weight: 700;
+  color: #212529;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #007bff; 
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Cards */
+.card {
+  border: none;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Card color accent on footer */
+.card-footer {
+  background: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  font-weight: 500;
+  color: #343a40;
+}
+
+/* Buttons */
+.btn-primary {
+  background: #007bff;
+  border: none;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-danger {
+  background: #dc3545;
+  border: none;
+  color: #ffffff;
+}
+
+.btn-danger:hover {
+  background: #a71d2a;
+}
+
+.btn-success {
+  background: #28a745; 
+  border: none;
+  color: #ffffff; 
+}
+
+.btn-success:hover {
+  background: #1e7e34;
+}
+
+/* Form Elements */
+input, select, textarea {
+  border-radius: 10px;
+  padding: 10px 14px;
+  border: 1px solid #ced4da;
+  transition: border 0.3s, box-shadow 0.3s;
+  font-size: 1rem;
+  background: #ffffff; 
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2);
+  outline: none;
+}
+
+/* Footer */
+.footer {
+  background: #212529;
+  color: #ffffff; 
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 60px;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+
+/* Struktur Organisasi */
+.flow-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.node {
+  text-align: center;
+  width: 100%;
+}
+
+.org-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.org-box {
+  background: #c8d9ff;
+  border-left: 6px solid #0d6efd;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  font-weight: 600;
+  color: #0d3878;
+  min-width: 240px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.org-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.line {
+  width: 4px;
+  height: 30px;
+  background-color: #000000;
+  margin: 10px auto;
+}
