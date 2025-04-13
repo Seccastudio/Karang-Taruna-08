@@ -9,6 +9,10 @@ import Kegiatan from "./pages/Kegiatan";
 import Keuangan from "./pages/Keuangan";
 import Artikel from "./pages/Artikel";
 import ProgramUnggulan from "./pages/ProgramUnggulan";
+import Keanggotaan from "./pages/Keanggotaan";
+import Pendaftaran from "./pages/Pendaftaran";
+import Produk from "./pages/Produk";
+
 import Login from "./pages/Login";
 
 // Halaman Admin
@@ -17,6 +21,10 @@ import ManageKegiatan from "./pages/admin/ManageKegiatan";
 import ManageKeuangan from "./pages/admin/ManageKeuangan";
 import ManageArtikel from "./pages/admin/ManageArtikel";
 import ManageProgram from "./pages/admin/ManageProgram";
+import ManageAnggotaPeserta from "./pages/admin/ManageAnggotaPeserta";
+import ManageProduk from "./pages/admin/ManageProduk";
+
+
 
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -30,6 +38,9 @@ function App() {
         <Route path="/keuangan" element={<Keuangan />} />
         <Route path="/artikel" element={<Artikel />} />
         <Route path="/program" element={<ProgramUnggulan />} />
+        <Route path="/keanggotaan" element={<Keanggotaan />} />
+        <Route path="/pendaftaran" element={<Pendaftaran />} />
+        <Route path="/produk" element={<Produk />} />
         <Route path="/login" element={<Login />} />
 
         <Route
@@ -57,6 +68,14 @@ function App() {
           }
         />
         <Route
+          path="/admin/produk"
+          element={
+            <PrivateRoute>
+              <ManageProduk />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/admin/artikel"
           element={
             <PrivateRoute>
@@ -72,6 +91,15 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/admin/anggota-peserta"
+          element={
+            <PrivateRoute>
+              <ManageAnggotaPeserta />
+            </PrivateRoute>
+          }
+        />
+
       </Routes>
       <Footer />
     </>

@@ -1,229 +1,123 @@
 import { useEffect, useState } from "react";
-import {
-  collection,
-  addDoc,
-  deleteDoc,
-  doc,
-  getDocs,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 
-const toBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
+const ManageAnggotaPeserta = () => {
+  const [anggotaList, setAnggotaList] = useState([]);
+  const [pesertaList, setPesertaList] = useState([]);
+  const [loadingAnggota, setLoadingAnggota] = useState(true); // Track loading anggota
+  const [loadingPeserta, setLoadingPeserta] = useState(true); // Track loading peserta
+  const [noAnggota, setNoAnggota] = useState(false); // Track jika data anggota kosong
+  const [noPeserta, setNoPeserta] = useState(false); // Track jika data peserta kosong
 
-const ManageKegiatan = () => {
-  const [kegiatanList, setKegiatanList] = useState([]);
-  const [judul, setJudul] = useState("");
-  const [deskripsi, setDeskripsi] = useState("");
-  const [tanggal, setTanggal] = useState("");
-  const [imageFile, setImageFile] = useState(null);
-  const [previewURL, setPreviewURL] = useState("");
+  const anggotaRef = collection(db, "pendaftaranKeanggotaan");
+  const pesertaRef = collection(db, "pendaftaranProgram");
 
-  const [editMode, setEditMode] = useState(false);
-  const [editId, setEditId] = useState(null);
+  // Fetch data anggota dan peserta
+  const fetchData = async () => {
+    setLoadingAnggota(true);
+    setLoadingPeserta(true);
 
-  const [loading, setLoading] = useState(true); // Track loading state
-  const [dataKosong, setDataKosong] = useState(false); // Track if there is no data
+    const anggotaSnapshot = await getDocs(anggotaRef);
+    const pesertaSnapshot = await getDocs(pesertaRef);
 
-  const kegiatanRef = collection(db, "kegiatan");
-
-  const fetchKegiatan = async () => {
-    setLoading(true);
-    const snapshot = await getDocs(kegiatanRef);
-    const data = snapshot.docs.map((doc) => ({
+    const anggotaData = anggotaSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    setKegiatanList(data);
-    setDataKosong(data.length === 0); // Set dataKosong to true if no data exists
-    setLoading(false);
+    const pesertaData = pesertaSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    setAnggotaList(anggotaData);
+    setPesertaList(pesertaData);
+
+    // Cek apakah data kosong
+    setNoAnggota(anggotaData.length === 0);
+    setNoPeserta(pesertaData.length === 0);
+
+    setLoadingAnggota(false);
+    setLoadingPeserta(false);
   };
 
   useEffect(() => {
-    fetchKegiatan();
+    fetchData();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!judul || !deskripsi || !tanggal) return;
-
-    let imageUrl = previewURL;
-    if (imageFile) {
-      imageUrl = await toBase64(imageFile);
-    }
-
-    if (editMode) {
-      const docRef = doc(db, "kegiatan", editId);
-      await updateDoc(docRef, {
-        judul,
-        deskripsi,
-        tanggal,
-        imageUrl,
-      });
-      setEditMode(false);
-      setEditId(null);
-    } else {
-      await addDoc(kegiatanRef, {
-        judul,
-        deskripsi,
-        tanggal,
-        imageUrl,
-      });
-    }
-
-    setJudul("");
-    setDeskripsi("");
-    setTanggal("");
-    setImageFile(null);
-    setPreviewURL("");
-    fetchKegiatan();
+  const handleDelete = async (id, type) => {
+    const ref = doc(db, type === "anggota" ? "pendaftaranKeanggotaan" : "pendaftaranProgram", id);
+    await deleteDoc(ref);
+    fetchData();
   };
 
-  const handleDelete = async (id) => {
-    await deleteDoc(doc(db, "kegiatan", id));
-    fetchKegiatan();
-  };
-
-  const handleEdit = (item) => {
-    setJudul(item.judul);
-    setDeskripsi(item.deskripsi);
-    setTanggal(item.tanggal);
-    setPreviewURL(item.imageUrl || "");
-    setEditId(item.id);
-    setEditMode(true);
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      setPreviewURL(URL.createObjectURL(file));
-    }
-  };
+  const renderCard = (data, type) => (
+    <div className="card mb-3 shadow-sm" key={data.id}>
+      <div className="card-body">
+        <h5 className="card-title">{type === "anggota" ? data.nama : data.namaPeserta}</h5>
+        <p className="card-text">
+          {type === "anggota" ? (
+            <>
+              <strong>Email:</strong> {data.email}<br />
+              <strong>Alamat:</strong> {data.alamat}
+            </>
+          ) : (
+            <>
+              <strong>Program:</strong> {data.program}<br />
+              <strong>Nomor HP:</strong> {data.hp}
+            </>
+          )}
+        </p>
+        <div className="d-flex justify-content-end gap-2">
+          <button className="btn btn-sm btn-danger" onClick={() => handleDelete(data.id, type)}>
+            Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
-    <div className="container my-5">
-      <h2 className="mb-4 fw-bold">🛠️ Kelola Kegiatan</h2>
+    <div className="container mt-5">
+      <h2 className="text-center fw-bold mb-4">Manajemen Anggota & Peserta Program</h2>
 
-      <form onSubmit={handleSubmit} className="mb-5">
-        <div className="mb-3">
-          <label className="form-label">Judul Kegiatan</label>
-          <input
-            type="text"
-            className="form-control"
-            value={judul}
-            onChange={(e) => setJudul(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Deskripsi</label>
-          <textarea
-            className="form-control"
-            rows="3"
-            value={deskripsi}
-            onChange={(e) => setDeskripsi(e.target.value)}
-            required
-          ></textarea>
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Tanggal Kegiatan</label>
-          <input
-            type="date"
-            className="form-control"
-            value={tanggal}
-            onChange={(e) => setTanggal(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Gambar (opsional)</label>
-          <input
-            type="file"
-            className="form-control"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-          {previewURL && (
-            <img
-              src={previewURL}
-              alt="Preview"
-              className="mt-2 rounded shadow"
-              style={{ height: "150px", objectFit: "cover" }}
-            />
-          )}
-        </div>
-
-        <button
-          type="submit"
-          className={`btn ${editMode ? "btn-warning" : "btn-success"}`}
-        >
-          {editMode ? "Update Kegiatan" : "Tambah Kegiatan"}
-        </button>
-      </form>
-
-      {/* Loading and Empty Data Notification */}
-      {loading ? (
+      {/* Notifikasi Loading */}
+      {loadingAnggota || loadingPeserta ? (
         <div className="text-center py-5">
           <div className="spinner-border text-primary" role="status" />
-          <p className="mt-3">Memuat data kegiatan...</p>
-        </div>
-      ) : dataKosong ? (
-        <div className="alert alert-info text-center" role="alert">
-          Belum ada data kegiatan ditambahkan.
+          <p className="mt-3">Memuat data...</p>
         </div>
       ) : (
-        <div className="row row-cols-1 row-cols-md-2 g-4">
-          {kegiatanList.map((item) => (
-            <div className="col" key={item.id}>
-              <div className="card shadow-sm h-100">
-                {item.imageUrl && (
-                  <img
-                    src={item.imageUrl}
-                    className="card-img-top"
-                    alt={item.judul}
-                    style={{ height: "180px", objectFit: "cover" }}
-                  />
-                )}
-                <div className="card-body">
-                  <h5 className="card-title">{item.judul}</h5>
-                  <p className="card-text">{item.deskripsi}</p>
-                </div>
-                <div className="card-footer d-flex justify-content-between align-items-center">
-                  <small className="text-muted">
-                    Tanggal: {new Date(item.tanggal).toLocaleDateString()}
-                  </small>
-                  <div>
-                    <button
-                      onClick={() => handleEdit(item)}
-                      className="btn btn-sm btn-outline-primary me-2"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(item.id)}
-                      className="btn btn-sm btn-outline-danger"
-                    >
-                      Hapus
-                    </button>
-                  </div>
-                </div>
+        <div className="row">
+          <div className="col-md-6">
+            <h4 className="mb-3 text-primary">Daftar Anggota</h4>
+
+            {/* Notifikasi Data Anggota Kosong */}
+            {noAnggota ? (
+              <div className="alert alert-info text-center" role="alert">
+                Belum ada data anggota ditambahkan.
               </div>
-            </div>
-          ))}
+            ) : (
+              anggotaList.map((anggota) => renderCard(anggota, "anggota"))
+            )}
+          </div>
+
+          <div className="col-md-6">
+            <h4 className="mb-3 text-success">Daftar Peserta Program</h4>
+
+            {/* Notifikasi Data Peserta Kosong */}
+            {noPeserta ? (
+              <div className="alert alert-info text-center" role="alert">
+                Belum ada data peserta ditambahkan.
+              </div>
+            ) : (
+              pesertaList.map((peserta) => renderCard(peserta, "peserta"))
+            )}
+          </div>
         </div>
       )}
     </div>
   );
 };
 
-export default ManageKegiatan;
+export default ManageAnggotaPeserta;
