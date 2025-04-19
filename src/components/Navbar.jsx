@@ -42,7 +42,7 @@ const Navbar = () => {
       <div
         className="brand-bar d-flex justify-content-between align-items-center px-4 py-2 text-dark"
         style={{
-          background: "linear-gradient(90deg, rgb(194, 225, 255) 0%, rgb(89, 219, 236) 100%)",
+          background: "linear-gradient(90deg, rgb(200, 202, 65) 0%, rgb(255, 253, 121) 100%)",
         }}
       >
         <Link to="/" className="d-flex align-items-center text-dark text-decoration-none">

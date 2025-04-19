@@ -19,7 +19,7 @@ body {
 
 /* Navbar */
 .navbar {
-  background: linear-gradient(90deg, #498f80 0%, #0082fc 100%);
+  background: linear-gradient(90deg, #8f8e49 0%, #c9bc04 100%);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -144,7 +144,7 @@ input:focus, select:focus, textarea:focus {
 
 /* Footer */
 .footer {
-  background: #212529;
+  background: #76b5f3;
   color: #ffffff; 
   text-align: center;
   padding: 20px 0;
