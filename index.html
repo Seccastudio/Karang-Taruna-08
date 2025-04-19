@@ -52,25 +52,49 @@
     <!-- Styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
 
+    <!-- Canonical Link -->
+    <link rel="canonical" href="https://karangtaruna08.vercel.app/article/${id}" />
+
     <!-- Structured Data -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Karang Taruna RW 08",
-      "url": "https://karangtaruna08.vercel.app",
-      "logo": "https://karangtaruna08.vercel.app/logo.png",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Kp. Dungus Maung RW 008",
-        "addressLocality": "Cikuya",
-        "addressRegion": "Jawa Barat",
-        "postalCode": "40395",
-        "addressCountry": "ID"
-      },
-      "sameAs": []
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Karang Taruna RW 08",
+        "url": "https://karangtaruna08.vercel.app",
+        "logo": "https://karangtaruna08.vercel.app/logo.png",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Kp. Dungus Maung RW 008",
+          "addressLocality": "Cikuya",
+          "addressRegion": "Jawa Barat",
+          "postalCode": "40395",
+          "addressCountry": "ID"
+        },
+        "sameAs": []
+      }
     </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "${artikel.headline}",
+        "author": {
+          "@type": "Person",
+          "name": "seccastudio"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Karang Taruna RW 08",
+          "logo": "https://karangtaruna08.vercel.app/logo.png"
+        },
+        "datePublished": "${artikel.publishedDate}",
+        "dateModified": "${artikel.modifiedDate}",
+        "description": "${artikel.description}"
+      }
+    </script>
+    
   </head>
 
   <body>

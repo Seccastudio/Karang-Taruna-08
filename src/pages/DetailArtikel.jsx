@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/config";
 import { doc, getDoc } from "firebase/firestore";
+import { Helmet } from "react-helmet";
 
 const DetailArtikel = () => {
   const { id } = useParams();
@@ -34,7 +35,7 @@ const DetailArtikel = () => {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
         <div className="alert alert-info text-center" role="alert">
-            Sedang memuat artikel...
+          Sedang memuat artikel...
         </div>
       </div>
     );
@@ -52,6 +53,16 @@ const DetailArtikel = () => {
 
   return (
     <div className="container py-5">
+      {/* Adding Helmet for SEO */}
+      <Helmet>
+        <title>{artikel.headline} - Karang Taruna 08</title>
+        <meta name="description" content={artikel.deskripsi} />
+        <meta property="og:title" content={artikel.headline} />
+        <meta property="og:description" content={artikel.deskripsi} />
+        <meta property="og:image" content={artikel.image} />
+        <meta property="og:url" content={`https://karangtaruna08.vercel.app/article/${id}`} />
+      </Helmet>
+
       <h2 className="fw-bold">{artikel.headline}</h2>
       <img src={artikel.image} alt={artikel.headline} className="img-fluid my-3" width={500} />
       <p>{artikel.deskripsi}</p>
