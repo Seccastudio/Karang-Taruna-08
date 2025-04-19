@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
+import { Link } from "react-router-dom";
 
 const MAX_LENGTH = 150;
 
 const Artikel = () => {
   const [artikelList, setArtikelList] = useState([]);
-  const [expandedIds, setExpandedIds] = useState([]);
-  const [loading, setLoading] = useState(true); // Tambahkan state loading
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchArtikel = async () => {
@@ -21,18 +21,12 @@ const Artikel = () => {
       } catch (error) {
         console.error("Gagal memuat data artikel:", error);
       } finally {
-        setLoading(false); // Akhiri loading setelah data diambil
+        setLoading(false);
       }
     };
 
     fetchArtikel();
   }, []);
-
-  const toggleExpand = (id) => {
-    setExpandedIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
 
   return (
     <div className="container py-5">
@@ -48,36 +42,36 @@ const Artikel = () => {
           </div>
         ) : (
           artikelList.map((item) => {
-            const isExpanded = expandedIds.includes(item.id);
-            const isLongText = item.deskripsi.length > MAX_LENGTH;
-            const deskripsiPreview = isExpanded
-              ? item.deskripsi
-              : item.deskripsi.slice(0, MAX_LENGTH) + (isLongText ? "..." : "");
+            const deskripsiPreview =
+              item.deskripsi.length > MAX_LENGTH
+                ? item.deskripsi.slice(0, MAX_LENGTH) + "..."
+                : item.deskripsi;
 
             return (
               <div className="col-md-6 col-lg-4" key={item.id}>
-                <div className="card h-100 shadow-sm border-0">
-                  {item.image && (
-                    <img
-                      src={item.image}
-                      alt={item.headline}
-                      className="card-img-top"
-                      style={{ height: "220px", objectFit: "cover" }}
-                    />
-                  )}
-                  <div className="card-body">
-                    <h5 className="card-title fw-semibold">{item.headline}</h5>
-                    <p className="card-text text-muted">{deskripsiPreview}</p>
-                    {isLongText && (
-                      <button
-                        className="btn btn-link p-0"
-                        onClick={() => toggleExpand(item.id)}
-                      >
-                        {isExpanded ? "Sembunyikan" : "Baca Selengkapnya"}
-                      </button>
+                <Link
+                  to={`/artikel/${item.id}`}
+                  className="text-decoration-none text-dark"
+                >
+                  <div className="card h-100 shadow-sm border-0">
+                    {item.image && (
+                      <img
+                        src={item.image}
+                        alt={item.headline}
+                        className="card-img-top"
+                        style={{ height: "220px", objectFit: "cover" }}
+                      />
                     )}
+                    <div className="card-body">
+                      <h5 className="card-title fw-semibold">
+                        {item.headline}
+                      </h5>
+                      <p className="card-text text-muted">
+                        {deskripsiPreview}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </Link>
               </div>
             );
           })

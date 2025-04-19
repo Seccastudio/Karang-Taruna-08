@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../firebase/config';
 
@@ -20,12 +21,10 @@ const Home = () => {
 
   const fetchContent = async () => {
     const headlineDoc = await getDoc(doc(db, 'homeContent', 'headline'));
-
     if (headlineDoc.exists()) {
       const data = headlineDoc.data();
       setHeadline(data.text || '');
       setHeadlineImage(data.image || '');
-      localStorage.setItem('headline', JSON.stringify({ text: data.text, image: data.image }));
     }
   };
 
@@ -39,20 +38,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const storedHeadline = localStorage.getItem('headline');
-
-    if (storedHeadline) {
-      const headlineData = JSON.parse(storedHeadline);
-      setHeadline(headlineData.text);
-      setHeadlineImage(headlineData.image);
-    } else {
-      fetchContent();
-    }
-
-    // Hitung pengunjung hari ini
+    fetchContent();
     setPengunjungHariIni(hitungPengunjungHariIni());
-
-    // Ambil artikel setelah konten utama
     fetchArtikel();
   }, []);
 
@@ -86,18 +73,18 @@ const Home = () => {
                   <p className="card-text">
                     Temukan berbagai kegiatan sosial, budaya, dan kepemudaan yang telah dan akan kami laksanakan.
                   </p>
-                  <a href="/kegiatan" className="btn btn-success">Lihat Kegiatan</a>
+                  <Link to="/kegiatan" className="btn btn-success">Lihat Kegiatan</Link>
                 </div>
               </div>
             </div>
             <div className="col-md-6">
-              <div className="card shadow-sm h-100"style={{ background: 'linear-gradient(90deg, #8f8e49 0%, #c9bc04 100%)' }}>
+              <div className="card shadow-sm h-100" style={{ background: 'linear-gradient(90deg, #8f8e49 0%, #c9bc04 100%)' }}>
                 <div className="card-body">
                   <h5 className="card-title text-primary">Informasi Keuangan</h5>
                   <p className="card-text">
                     Laporan pemasukan & pengeluaran dana secara transparan dan terpercaya.
                   </p>
-                  <a href="/keuangan" className="btn btn-primary text-white">Lihat Keuangan</a>
+                  <Link to="/keuangan" className="btn btn-primary text-white">Lihat Keuangan</Link>
                 </div>
               </div>
             </div>
@@ -113,19 +100,21 @@ const Home = () => {
               ) : (
                 artikelList.map((artikel) => (
                   <div key={artikel.id} className="col-md-4">
-                    <div className="card shadow-sm">
-                      <img
-                        src={artikel.image}
-                        alt="Artikel"
-                        className="card-img-top"
-                        style={{ height: '200px', objectFit: 'cover' }}
-                      />
-                      <div className="card-body">
-                        <h5 className="card-title">{artikel.headline}</h5>
-                        <p className="card-text">{artikel.deskripsi.slice(0, 100)}...</p>
-                        <a href= "/artikel" className="btn btn-primary">Baca Selengkapnya</a>
+                    <Link to={`/artikel/${artikel.id}`} className="text-decoration-none text-dark">
+                      <div className="card shadow-sm">
+                        <img
+                          src={artikel.image}
+                          alt="Artikel"
+                          className="card-img-top"
+                          style={{ height: '200px', objectFit: 'cover' }}
+                        />
+                        <div className="card-body">
+                          <h5 className="card-title">{artikel.headline}</h5>
+                          <p className="card-text">{artikel.deskripsi.slice(0, 100)}...</p>
+                          <div className="btn btn-primary">Baca Selengkapnya</div>
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 ))
               )}
@@ -137,7 +126,7 @@ const Home = () => {
         <div className="col-lg-3">
           <div style={{ position: 'sticky', top: '70px' }}>
             <div className="card shadow-sm mb-5">
-              <div className="card-header text-white"  style={{ background: 'linear-gradient(90deg, #8f8e49 0%, #c9bc04 100%)' }}>
+              <div className="card-header text-white" style={{ background: 'linear-gradient(90deg, #8f8e49 0%, #c9bc04 100%)' }}>
                 <h5 className="card-title">Pengunjung hari ini</h5>
               </div>
               <div className="card-body">
@@ -148,19 +137,19 @@ const Home = () => {
             </div>
 
             <div className="card shadow-sm mb-5">
-              <div className="card-header text-white"  style={{ background: 'linear-gradient(90deg, #8f8e49 0%, #c9bc04 100%)' }}>
+              <div className="card-header text-white" style={{ background: 'linear-gradient(90deg, #8f8e49 0%, #c9bc04 100%)' }}>
                 <strong>Navigasi</strong>
               </div>
               <ul className="list-group list-group-flush">
-                <li className="list-group-item"><a href="/kegiatan">➤ Kegiatan</a></li>
-                <li className="list-group-item"><a href="/keuangan">➤ Keuangan</a></li>
-                <li className="list-group-item"><a href="/artikel">➤ Artikel</a></li>
-                <li className="list-group-item"><a href="/program">➤ Program</a></li>
+                <li className="list-group-item"><Link to="/kegiatan">➤ Kegiatan</Link></li>
+                <li className="list-group-item"><Link to="/keuangan">➤ Keuangan</Link></li>
+                <li className="list-group-item"><Link to="/artikel">➤ Artikel</Link></li>
+                <li className="list-group-item"><Link to="/program">➤ Program</Link></li>
               </ul>
             </div>
 
             <div className="card shadow-sm mb-5">
-              <div className="card-header text-white"  style={{ background: 'linear-gradient(90deg, #8f8e49 0%, #c9bc04 100%)' }}>
+              <div className="card-header text-white" style={{ background: 'linear-gradient(90deg, #8f8e49 0%, #c9bc04 100%)' }}>
                 <h5 className="card-title">Daftar Anggota</h5>
               </div>
               <div className="card-body">
@@ -172,7 +161,7 @@ const Home = () => {
             </div>
 
             <div className="card shadow-sm mb-5">
-              <div className="card-header text-white"  style={{ background: 'linear-gradient(90deg, #8f8e49 0%, #c9bc04 100%)' }}>
+              <div className="card-header text-white" style={{ background: 'linear-gradient(90deg, #8f8e49 0%, #c9bc04 100%)' }}>
                 <h5 className="card-title">Tentang Kami</h5>
               </div>
               <div className="card-body">

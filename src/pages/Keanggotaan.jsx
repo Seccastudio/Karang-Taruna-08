@@ -5,31 +5,24 @@ import { db } from '../firebase/config';
 const Keanggotaan = () => {
   const [struktur, setStruktur] = useState(null);
 
-  const fetchContent = async () => {
-    try {
-      const strukturDoc = await getDoc(doc(db, 'homeContent', 'strukturOrganisasi'));
-      if (strukturDoc.exists()) {
-        const data = strukturDoc.data();
-        setStruktur(data);
-        localStorage.setItem('struktur', JSON.stringify(data));
-      }
-    } catch (error) {
-      console.error("Gagal mengambil data struktur:", error);
-    }
-  };
-
   useEffect(() => {
-    const storedStruktur = localStorage.getItem('struktur');
-    if (storedStruktur) {
-      setStruktur(JSON.parse(storedStruktur));
-    } else {
-      fetchContent();
-    }
+    const fetchContent = async () => {
+      try {
+        const strukturDoc = await getDoc(doc(db, 'homeContent', 'strukturOrganisasi'));
+        if (strukturDoc.exists()) {
+          setStruktur(strukturDoc.data());
+        }
+      } catch (error) {
+        console.error("Gagal mengambil data struktur:", error);
+      }
+    };
+
+    fetchContent();
   }, []);
 
   return (
-        <div className="container mt-5">
-        <h2 className="fw-bold  text-center text-dark">Keanggotaan</h2>
+    <div className="container mt-5">
+      <h2 className="fw-bold text-center text-dark">Keanggotaan</h2>
       {struktur ? (
         <div className="flow-chart">
           <h1 className="mb-4 text-center text-dark mt-5">STRUKTUR ORGANISASI</h1>

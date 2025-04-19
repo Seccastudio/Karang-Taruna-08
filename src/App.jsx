@@ -12,6 +12,8 @@ import ProgramUnggulan from "./pages/ProgramUnggulan";
 import Keanggotaan from "./pages/Keanggotaan";
 import Pendaftaran from "./pages/Pendaftaran";
 import Produk from "./pages/Produk";
+import DetailArtikel from "./pages/DetailArtikel"; 
+
 
 import Login from "./pages/Login";
 
@@ -42,6 +44,7 @@ function App() {
         <Route path="/pendaftaran" element={<Pendaftaran />} />
         <Route path="/produk" element={<Produk />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/artikel/:id" element={<DetailArtikel />} />
 
         <Route
           path="/admin/dashboard"
